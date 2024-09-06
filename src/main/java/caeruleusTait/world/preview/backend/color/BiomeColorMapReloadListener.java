@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static caeruleusTait.world.preview.WorldPreview.LOGGER;
 
@@ -79,7 +80,10 @@ public class BiomeColorMapReloadListener extends BaseMultiJsonResourceReloadList
                 JsonElement rEl = raw.get("r");
                 JsonElement gEl = raw.get("g");
                 JsonElement bEl = raw.get("b");
+                JsonElement caveEl = raw.get("cave");
                 value.name = nameEl == null ? null : nameEl.getAsString();
+                value.cave = caveEl == null ? Optional.empty() : Optional.of(caveEl.getAsBoolean());
+
                 if (colorEl != null) {
                     value.color = colorEl.getAsInt() & 0xFFFFFF;
                 } else if (rEl != null && gEl != null && bEl != null) {
