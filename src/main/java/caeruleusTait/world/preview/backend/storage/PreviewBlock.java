@@ -7,7 +7,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import static caeruleusTait.world.preview.backend.storage.PreviewStorage.FLAG_HEIGHT;
 import static caeruleusTait.world.preview.backend.storage.PreviewStorage.FLAG_STRUCT_START;
 
 public class PreviewBlock implements Serializable {

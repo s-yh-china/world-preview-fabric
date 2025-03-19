@@ -9,7 +9,7 @@
 # changelog header
 header = """
 # Changelog\n
-This document contains a list of notable changes for world-preview.\n
+This document contains a list of notable changes for world-preview-fabric.\n
 """
 # template for the changelog body
 # https://keats.github.io/tera/docs/#introduction
@@ -34,7 +34,7 @@ footer = """
 """
 # postprocessors
 postprocessors = [
-  { pattern = '<REPO>', replace = "https://github.com/caeruleusDraconis/world-preview" }, # replace repository URL
+  { pattern = '<REPO>', replace = "https://github.com/s-yh-china/world-preview-fabric" }, # replace repository URL
   { pattern = '\[(NEW|FIX|INT|DOC|REF|REFACTOR)]', replace = "" }, # replace our commit tags
 ]
 [git]
@@ -46,7 +46,7 @@ filter_unconventional = false
 split_commits = false
 # regex for preprocessing the commit messages
 commit_preprocessors = [
-  { pattern = '(\(|\[)(\w+\s)?#([0-9]+)(\)|\])', replace = "[[#${3}]](<REPO>/issues/${3})"}, # replace issue numbers
+  { pattern = '(\(|\()(\w+\s)?#([0-9]+)(\)|\))', replace = "[[#${3}]](<REPO>/issues/${3})"}, # replace issue numbers
   { pattern = '^(.*)(\n.*)+', replace = "${1}\n" }, # only include the first line of a commit
   { pattern = '.*(CHANGE:).*', replace = "**${1}**" }, # bold changes
 ]

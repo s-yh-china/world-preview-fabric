@@ -63,7 +63,7 @@ public class ColorChooser extends AbstractWidget {
         // render background
         guiGraphics.fill(getX() - 2, getY() - 2, getX() + width + 2, getY() + height + 2, 0x77000000);
 
-        RenderSystem.setShader(() -> WorldPreviewClient.HSV_SHADER);
+        RenderSystem.setShader(WorldPreviewClient.HSV_SHADER);
         Matrix4f posMatrix = guiGraphics.pose().last().pose();
 
         // Render saturation value chooser
@@ -92,7 +92,7 @@ public class ColorChooser extends AbstractWidget {
         guiGraphics.fill(satX - 3, valY - 3, satX + 3, valY + 3, argbColor);
 
         // Render Hue chooser
-        RenderSystem.setShader(() -> WorldPreviewClient.HSV_SHADER);
+        RenderSystem.setShader(WorldPreviewClient.HSV_SHADER);
         leftX = rightX + SEPARATOR;
         rightX = leftX + hBarWidth;
 

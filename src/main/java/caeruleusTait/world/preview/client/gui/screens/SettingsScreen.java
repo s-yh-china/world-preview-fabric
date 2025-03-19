@@ -9,6 +9,7 @@ import caeruleusTait.world.preview.client.gui.screens.settings.DimensionsTab;
 import caeruleusTait.world.preview.client.gui.screens.settings.GeneralTab;
 import caeruleusTait.world.preview.client.gui.screens.settings.HeightmapTab;
 import caeruleusTait.world.preview.client.gui.screens.settings.SamplingTab;
+import caeruleusTait.world.preview.client.gui.widgets.lists.BiomesList;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.tabs.TabManager;
@@ -17,6 +18,7 @@ import net.minecraft.client.gui.layouts.FrameLayout;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -88,7 +90,7 @@ public class SettingsScreen extends Screen {
 
     @Override
     public void render(GuiGraphics guiGraphics, int i, int j, float f) {
-        guiGraphics.blit(FOOTER_SEPERATOR, 0, Mth.roundToward(this.height - 36 - 2, 2), 0.0F, 0.0F, this.width, 2, 32, 2);
+        guiGraphics.blit(RenderType::guiTextured, FOOTER_SEPERATOR, 0, Mth.roundToward(this.height - 36 - 2, 2), 0.0F, 0.0F, this.width, 2, 32, 2);
         super.render(guiGraphics, i, j, f);
     }
 
@@ -99,7 +101,7 @@ public class SettingsScreen extends Screen {
                 .filter(x -> x.dataSource() == PreviewData.DataSource.CONFIG)
                 .collect(
                         Collectors.toMap(
-                                x -> x.entry().key().location(),
+                                BiomesList.BiomeEntry::location,
                                 x -> new PreviewMappingData.ColorEntry(PreviewData.DataSource.CONFIG, x.color(), x.isCave(), x.name())
                         )
                 );

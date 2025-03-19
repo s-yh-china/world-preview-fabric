@@ -40,9 +40,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.LOADING_PREVIEW;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SAVING_PREVIEW;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.TITLE;
+import static caeruleusTait.world.preview.client.WorldPreviewComponents.*;
 
 public class PreviewTab implements Tab, AutoCloseable, PreviewContainerDataProvider {
 
@@ -103,7 +101,7 @@ public class PreviewTab implements Tab, AutoCloseable, PreviewContainerDataProvi
                     try {
                         // If a WorldPreset is available, use it to generate the dimensions
                         ResourceKey<WorldPreset> worldPresetKey = uiState.getWorldType().preset().unwrapKey().orElseThrow();
-                        WorldPreset worldPreset = dataLoadContext.datapackWorldgen().registryOrThrow(Registries.WORLD_PRESET).getOrThrow(worldPresetKey);
+                        WorldPreset worldPreset = dataLoadContext.datapackWorldgen().lookupOrThrow(Registries.WORLD_PRESET).getOrThrow(worldPresetKey).value();
                         worldDimensions = worldPreset.createWorldDimensions();
                     } catch(NullPointerException | NoSuchElementException | IllegalStateException ex) {
                         // Otherwise, create the dimensions using the world data (necessary if re-creating a world)
@@ -190,7 +188,7 @@ public class PreviewTab implements Tab, AutoCloseable, PreviewContainerDataProvi
 
     @Override
     public @Nullable Path tempDataPackDir() {
-        return ((CreateWorldScreenAccessor) createWorldScreen).invokeGetTempDataPackDir();
+        return ((CreateWorldScreenAccessor) createWorldScreen).invokeGetOrCreateTempDataPackDir();
     }
 
     @Override

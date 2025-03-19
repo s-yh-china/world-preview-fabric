@@ -33,14 +33,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.COLOR_APPLY;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.COLOR_CAVE;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.COLOR_HUE;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.COLOR_LIST_FILTER;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.COLOR_RESET;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.COLOR_SAT;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.COLOR_VAL;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_BIOMES_TITLE;
+import static caeruleusTait.world.preview.client.WorldPreviewComponents.*;
 import static caeruleusTait.world.preview.client.gui.screens.PreviewContainer.LINE_HEIGHT;
 import static caeruleusTait.world.preview.client.gui.screens.PreviewContainer.LINE_VSPACE;
 
@@ -265,7 +258,7 @@ public class BiomesTab implements Tab {
 
     public enum BiomeListFilter {
         DIMENSION(x -> {
-            LevelStem levelStem = x.previewTab().levelStemRegistry().get(WorldPreview.get().renderSettings().dimension);
+            LevelStem levelStem = x.previewTab().levelStemRegistry().getValue(WorldPreview.get().renderSettings().dimension);
             if (levelStem == null) {
                 return true;
             }
@@ -277,7 +270,7 @@ public class BiomesTab implements Tab {
                     .map(Optional::orElseThrow)
                     .map(ResourceKey::location)
                     .collect(Collectors.toSet());
-            return supportedBiomes.contains(x.entry().key().location());
+            return supportedBiomes.contains(x.location());
         }),
         ALL(x -> true),
         MISSING(x -> x.dataSource() == PreviewData.DataSource.MISSING),

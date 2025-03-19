@@ -29,16 +29,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_HEIGHTMAP_COLORMAP;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_HEIGHTMAP_DISABLED;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_HEIGHTMAP_MAX_Y;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_HEIGHTMAP_MAX_Y_TOOLTIP;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_HEIGHTMAP_MIN_Y;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_HEIGHTMAP_MIN_Y_TOOLTIP;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_HEIGHTMAP_PRESETS;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_HEIGHTMAP_TITLE;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_HEIGHTMAP_VISUAL;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_HEIGHTMAP_VISUAL_TOOLTIP;
+import static caeruleusTait.world.preview.client.WorldPreviewComponents.*;
 import static caeruleusTait.world.preview.client.gui.screens.PreviewContainer.LINE_HEIGHT;
 import static caeruleusTait.world.preview.client.gui.screens.PreviewContainer.LINE_VSPACE;
 
@@ -302,7 +293,7 @@ public class HeightmapTab implements Tab {
                 this.colormapTexture = new DynamicTexture(this.colormapImg);
 
                 for (int i = 0; i < 1024; ++i) {
-                    this.colormapImg.setPixelRGBA(i, 0, colorMap.getARGB((float)i / 1024f));
+                    this.colormapImg.setPixel(i, 0, colorMap.getARGB((float)i / 1024f));
                 }
                 this.colormapTexture.upload();
             }

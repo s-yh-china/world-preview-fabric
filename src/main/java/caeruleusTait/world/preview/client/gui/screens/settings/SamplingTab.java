@@ -11,12 +11,7 @@ import net.minecraft.network.chat.Component;
 
 import java.util.List;
 
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_SAMPLE_HEAD;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_SAMPLE_PIXELS_TITLE_1;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_SAMPLE_PIXELS_TITLE_2;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_SAMPLE_SAMPLE_TITLE_1;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_SAMPLE_SAMPLE_TITLE_2;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_SAMPLE_TITLE;
+import static caeruleusTait.world.preview.client.WorldPreviewComponents.*;
 import static caeruleusTait.world.preview.client.gui.screens.PreviewContainer.LINE_HEIGHT;
 
 public class SamplingTab extends GridLayoutTab {

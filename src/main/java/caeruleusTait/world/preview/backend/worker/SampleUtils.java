@@ -15,21 +15,40 @@ import com.mojang.serialization.Lifecycle;
 import net.minecraft.FileUtil;
 import net.minecraft.Util;
 import net.minecraft.commands.Commands;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.LayeredRegistryAccess;
+import net.minecraft.core.QuartPos;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.*;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.RegistryLayer;
+import net.minecraft.server.ReloadableServerResources;
+import net.minecraft.server.Services;
+import net.minecraft.server.WorldLoader;
+import net.minecraft.server.WorldStem;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.progress.ChunkProgressListener;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.server.packs.repository.ServerPacksSource;
 import net.minecraft.server.packs.resources.CloseableResourceManager;
+import net.minecraft.tags.TagLoader;
 import net.minecraft.util.datafix.DataFixers;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.flag.FeatureFlagSet;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.LevelSettings;
+import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.WorldDataConfiguration;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.biome.BiomeSource;
@@ -38,10 +57,18 @@ import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
-import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.chunk.ProtoChunk;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.dimension.LevelStem;
-import net.minecraft.world.level.levelgen.*;
+import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.DensityFunctions;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
+import net.minecraft.world.level.levelgen.NoiseChunk;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.levelgen.NoiseSettings;
+import net.minecraft.world.level.levelgen.RandomState;
+import net.minecraft.world.level.levelgen.WorldOptions;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureCheck;
@@ -117,11 +144,11 @@ public class SampleUtils implements AutoCloseable {
         this.biomeSource = biomeSource;
         this.chunkGenerator = chunkGenerator;
         this.registryAccess = minecraftServer.registryAccess();
-        this.structureRegistry = this.registryAccess.registryOrThrow(Registries.STRUCTURE);
+        this.structureRegistry = this.registryAccess.lookupOrThrow(Registries.STRUCTURE);
         this.structureTemplateManager = minecraftServer.getStructureManager();
         this.previewLevel = new PreviewLevel(this.registryAccess, this.levelHeightAccessor);
 
-        ResourceKey<LevelStem> levelStemResourceKey = this.registryAccess.registryOrThrow(LEVEL_STEM)
+        ResourceKey<LevelStem> levelStemResourceKey = this.registryAccess.lookupOrThrow(LEVEL_STEM)
                 .getResourceKey(levelStem)
                 .orElseThrow();
         dimension = Registries.levelStemToLevel(levelStemResourceKey);
@@ -216,7 +243,7 @@ public class SampleUtils implements AutoCloseable {
         this.biomeSource = biomeSource;
         this.chunkGenerator = chunkGenerator;
         this.registryAccess = layeredRegistryAccess.compositeAccess();
-        this.structureRegistry = this.registryAccess.registryOrThrow(Registries.STRUCTURE);
+        this.structureRegistry = this.registryAccess.lookupOrThrow(Registries.STRUCTURE);
         this.previewLevel = new PreviewLevel(this.registryAccess, this.levelHeightAccessor);
 
         PackRepository packRepository = ServerPacksSource.createPackRepository(levelStorageAccess);
@@ -227,8 +254,7 @@ public class SampleUtils implements AutoCloseable {
                 false
         )).createResourceManager().getSecond();
 
-        HolderGetter<Block> holderGetter = this.registryAccess.registryOrThrow(Registries.BLOCK)
-                .asLookup()
+        HolderGetter<Block> holderGetter = this.registryAccess.lookupOrThrow(Registries.BLOCK)
                 .filterFeatures(worldDataConfiguration.enabledFeatures());
         this.structureTemplateManager = new StructureTemplateManager(
                 resourceManager,
@@ -237,7 +263,7 @@ public class SampleUtils implements AutoCloseable {
                 holderGetter
         );
 
-        ResourceKey<LevelStem> levelStemResourceKey = this.registryAccess.registryOrThrow(LEVEL_STEM)
+        ResourceKey<LevelStem> levelStemResourceKey = this.registryAccess.lookupOrThrow(LEVEL_STEM)
                 .getResourceKey(levelStem)
                 .orElseThrow();
         dimension = Registries.levelStemToLevel(levelStemResourceKey);
@@ -245,9 +271,10 @@ public class SampleUtils implements AutoCloseable {
         // Some mods listen on the <init> of MinecraftServer
         final int functionCompilationLevel = 0;
         final Executor executor = Executors.newSingleThreadExecutor();
-        final LevelSettings levelSettings = new LevelSettings("temp", GameType.CREATIVE, false, Difficulty.NORMAL, true, new GameRules(), worldDataConfiguration);
+        final LevelSettings levelSettings = new LevelSettings("temp", GameType.CREATIVE, false, Difficulty.NORMAL, true, new GameRules(worldDataConfiguration.enabledFeatures()), worldDataConfiguration);
+        List<Registry.PendingTags<?>> list = TagLoader.loadTagsForExistingRegistries(resourceManager, layeredRegistryAccess.getLayer(RegistryLayer.STATIC));
         final PrimaryLevelData primaryLevelData = new PrimaryLevelData(levelSettings, worldOptions, PrimaryLevelData.SpecialWorldProperty.NONE, Lifecycle.stable());
-        final var future = ReloadableServerResources.loadResources(resourceManager, layeredRegistryAccess, worldDataConfiguration.enabledFeatures(), Commands.CommandSelection.DEDICATED, functionCompilationLevel, executor, executor);
+        final var future = ReloadableServerResources.loadResources(resourceManager, layeredRegistryAccess, list, worldDataConfiguration.enabledFeatures(), Commands.CommandSelection.DEDICATED, functionCompilationLevel, executor, executor);
         final ReloadableServerResources reloadableServerResources;
         try {
             reloadableServerResources = future.get();
@@ -257,8 +284,7 @@ public class SampleUtils implements AutoCloseable {
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         }
-        // Pre 1.20.5 version:
-        // ReloadableServerResources reloadableServerResources = new ReloadableServerResources(layeredRegistryAccess.compositeAccess(), FeatureFlagSet.of(), Commands.CommandSelection.ALL, 0);
+        reloadableServerResources.updateStaticRegistryTags();
         WorldStem worldStem = new WorldStem(resourceManager, reloadableServerResources, layeredRegistryAccess, primaryLevelData);
 
         final ChunkProgressListener chunkProgressListener = new ChunkProgressListener() {
@@ -456,7 +482,7 @@ public class SampleUtils implements AutoCloseable {
 
     public List<Pair<ResourceLocation, StructureStart>> doStructures(ChunkPos chunkPos) {
         ProtoChunk protoChunk = (ProtoChunk) previewLevel.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.FULL, false);
-        chunkGenerator.createStructures(registryAccess, chunkGeneratorStructureState, structureManager, protoChunk, structureTemplateManager);
+        chunkGenerator.createStructures(registryAccess, chunkGeneratorStructureState, structureManager, protoChunk, structureTemplateManager, dimension);
         Map<Structure, StructureStart> raw = protoChunk.getAllStarts();
         List<Pair<ResourceLocation, StructureStart>> res = new ArrayList<>(raw.size());
         for (Map.Entry<Structure, StructureStart> x : protoChunk.getAllStarts().entrySet()) {
@@ -507,9 +533,6 @@ public class SampleUtils implements AutoCloseable {
         // FileUtils.deleteDirectory(tempDir.toFile());
         if (serverLevel != null) {
             serverLevel.close();
-        }
-        if (minecraftServer instanceof DummyMinecraftServer) {
-            WorldPreview.get().loaderSpecificTeardown(minecraftServer);
         }
         if (tempDir != null) {
             deleteDirectoryLegacyIO(tempDir.toFile());

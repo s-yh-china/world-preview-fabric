@@ -2,6 +2,7 @@ package caeruleusTait.world.preview.client.gui.widgets;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
 public class ToggleButton extends OldStyleImageButton {
@@ -47,10 +48,11 @@ public class ToggleButton extends OldStyleImageButton {
             y += yDiffTex;
         }
 
-        guiGraphics.setColor(1.0F, 1.0F, 1.0F, this.alpha);
+        guiGraphics.flush();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
-        guiGraphics.blit(texture, getX(), getY(), x, y, width, height, texWidth, texHeight);
+        guiGraphics.blit(RenderType::guiTextured, texture, getX(), getY(), x, y, width, height, texWidth, texHeight);
     }
 
     @Override

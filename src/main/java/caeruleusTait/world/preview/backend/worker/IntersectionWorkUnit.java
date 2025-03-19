@@ -2,7 +2,6 @@ package caeruleusTait.world.preview.backend.worker;
 
 import caeruleusTait.world.preview.backend.color.PreviewData;
 import caeruleusTait.world.preview.backend.sampler.ChunkSampler;
-import caeruleusTait.world.preview.backend.storage.PreviewSection;
 import caeruleusTait.world.preview.backend.storage.PreviewStorage;
 import caeruleusTait.world.preview.mixin.NoiseChunkAccessor;
 import net.minecraft.core.BlockPos;
@@ -10,7 +9,6 @@ import net.minecraft.core.QuartPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseChunk;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.NoiseSettings;
@@ -18,7 +16,6 @@ import net.minecraft.world.level.levelgen.NoiseSettings;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Predicate;
 
 public class IntersectionWorkUnit extends WorkUnit {
     private final ChunkSampler sampler;

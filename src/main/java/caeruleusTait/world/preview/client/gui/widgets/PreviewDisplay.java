@@ -10,9 +10,9 @@ import caeruleusTait.world.preview.backend.storage.PreviewStorage;
 import caeruleusTait.world.preview.client.WorldPreviewClient;
 import caeruleusTait.world.preview.client.gui.PreviewDisplayDataProvider;
 import caeruleusTait.world.preview.client.gui.widgets.lists.BiomesList;
+import com.mojang.blaze3d.ProjectionType;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.VertexSorting;
 import it.unimi.dsi.fastutil.shorts.Short2LongMap;
 import it.unimi.dsi.fastutil.shorts.Short2LongOpenHashMap;
 import net.minecraft.client.Minecraft;
@@ -28,7 +28,6 @@ import net.minecraft.core.QuartPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.levelgen.NoiseRouter;
 import net.minecraft.world.level.levelgen.NoiseRouterData;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.material.MapColor;
@@ -258,14 +257,14 @@ public class PreviewDisplay extends AbstractWidget implements AutoCloseable {
                 guiGraphics.enableScissor(xMin, yMin, xMax, yMax);
                 // Effectively set the guiscale to 1
                 Matrix4f matrix4f = (new Matrix4f()).setOrtho(0.0F, (float)(winWidth), (float)(winHeight), 0.0F, 1000.0F, 21000.0F);
-                RenderSystem.setProjectionMatrix(matrix4f, VertexSorting.ORTHOGRAPHIC_Z);
+                RenderSystem.setProjectionMatrix(matrix4f, ProjectionType.ORTHOGRAPHIC);
 
                 renderStructures(renderData, guiGraphics);
                 renderPlayerAndSpawn();
 
                 // Make sure to reset the matrix
                 matrix4f = (new Matrix4f()).setOrtho(0.0F, (float)(winWidth / guiScale), (float)(winHeight / guiScale), 0.0F, 1000.0F, 21000.0F);
-                RenderSystem.setProjectionMatrix(matrix4f, VertexSorting.ORTHOGRAPHIC_Z);
+                RenderSystem.setProjectionMatrix(matrix4f, ProjectionType.ORTHOGRAPHIC);
                 guiGraphics.disableScissor();
 
                 // Update hover info
@@ -483,7 +482,7 @@ public class PreviewDisplay extends AbstractWidget implements AutoCloseable {
                                 color
                         );
                     } else {
-                        previewImg.setPixelRGBA(texX, texZ, color);
+                        previewImg.setPixel(texX, texZ, color);
                     }
 
                     texZ += quartExpand;
@@ -859,7 +858,7 @@ public class PreviewDisplay extends AbstractWidget implements AutoCloseable {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         // Copy TP command to clipboard on right click
-        if (this.clicked(mouseX, mouseY) && button == 1) {
+        if (this.isMouseOver(mouseX, mouseY) && button == 1) {
             this.playDownSound(minecraft.getSoundManager());
 
             final HoverInfo hoverInfo = hoveredBiome(mouseX, mouseY);
