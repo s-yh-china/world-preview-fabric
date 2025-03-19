@@ -10,9 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import org.jetbrains.annotations.NotNull;
 
-import static caeruleusTait.world.preview.client.gui.screens.PreviewContainer.BUTTONS_TEXTURE;
-import static caeruleusTait.world.preview.client.gui.screens.PreviewContainer.BUTTONS_TEX_HEIGHT;
-import static caeruleusTait.world.preview.client.gui.screens.PreviewContainer.BUTTONS_TEX_WIDTH;
+import static caeruleusTait.world.preview.client.gui.screens.PreviewContainer.*;
 
 public class SeedsList extends BaseObjectSelectionList<SeedsList.SeedEntry> {
     private final PreviewContainer previewContainer;

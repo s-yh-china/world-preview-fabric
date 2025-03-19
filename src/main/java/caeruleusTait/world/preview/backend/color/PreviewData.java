@@ -1,5 +1,7 @@
 package caeruleusTait.world.preview.backend.color;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2ShortMap;
 import net.minecraft.resources.ResourceLocation;
 
@@ -28,5 +30,10 @@ public record PreviewData(
     }
 
     public record HeightmapPresetData(String name, int minY, int maxY) {
+        public static final Codec<HeightmapPresetData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.STRING.fieldOf("name").forGetter(HeightmapPresetData::name),
+                Codec.INT.fieldOf("minY").forGetter(HeightmapPresetData::minY),
+                Codec.INT.fieldOf("maxY").forGetter(HeightmapPresetData::maxY)
+        ).apply(instance, HeightmapPresetData::new));
     }
 }

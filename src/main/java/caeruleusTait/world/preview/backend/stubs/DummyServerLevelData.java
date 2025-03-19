@@ -3,6 +3,7 @@ package caeruleusTait.world.preview.backend.stubs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.border.WorldBorder;
@@ -176,7 +177,7 @@ public class DummyServerLevelData implements ServerLevelData {
 
     @Override
     public GameRules getGameRules() {
-        return new GameRules();
+        return new GameRules(FeatureFlagSet.of());
     }
 
     @Override

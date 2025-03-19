@@ -1,5 +1,7 @@
 package caeruleusTait.world.preview.backend.color;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
 
 import java.security.InvalidParameterException;
@@ -20,6 +22,10 @@ public class ColorMap {
     }
 
     public record RawColorMap(String name, List<List<Float>> data) {
+        public static final Codec<RawColorMap> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.STRING.fieldOf("name").forGetter(RawColorMap::name),
+                Codec.list(Codec.list(Codec.FLOAT)).fieldOf("data").forGetter(RawColorMap::data)
+        ).apply(instance, RawColorMap::new));
     }
 
     public ColorMap(ResourceLocation key, String name, Color[] colors) {
@@ -90,9 +96,9 @@ public class ColorMap {
     public int[] bake(int yMin, int yMax, int yVisMin, int yVisMax) {
         int[] res = new int[yMax - yMin];
 
-        float visRange = (float)yVisMax - (float)yVisMin;
+        float visRange = (float) yVisMax - (float) yVisMin;
         for (int i = yMin; i < yMax; ++i) {
-            res[i - yMin] = getARGB((float)(i - yVisMin) / visRange);
+            res[i - yMin] = getARGB((float) (i - yVisMin) / visRange);
         }
 
         return res;
@@ -102,7 +108,7 @@ public class ColorMap {
         int[] res = new int[numValues];
 
         for (int i = 0; i < numValues; ++i) {
-            res[i] = getARGB((float)(i) / numValues);
+            res[i] = getARGB((float) (i) / numValues);
         }
 
         return res;

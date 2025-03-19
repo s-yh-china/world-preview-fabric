@@ -4,8 +4,8 @@
     "srcrgb": "srcalpha",
     "dstrgb": "1-srcalpha"
   },
-  "vertex": "position_color",
-  "fragment": "world_preview:hsv",
+  "vertex": "minecraft:core/position_color",
+  "fragment": "world_preview:core/hsv",
   "attributes": [
   ],
   "samplers": [

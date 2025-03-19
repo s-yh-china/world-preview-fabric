@@ -29,7 +29,7 @@ public abstract class BaseObjectSelectionList<E extends BaseObjectSelectionList.
     }
 
     @Override
-    protected int getScrollbarPosition() {
+    protected int scrollBarX() {
         return getRowRight();
     }
 

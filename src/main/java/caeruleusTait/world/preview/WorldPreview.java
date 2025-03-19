@@ -15,16 +15,18 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.concurrent.Executor;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class WorldPreview implements ModInitializer {
+
+    public static final String ID = "world_preview_fabric";
+
     // This logger is used to write text to the console and the log file.
     // It is considered best practice to use your mod id as the logger's name.
     // That way, it's clear which mod wrote info, warnings, and errors.
-    public static final Logger LOGGER = LoggerFactory.getLogger("world_preview");
+    public static final Logger LOGGER = LoggerFactory.getLogger(ID);
 
     private static WorldPreview INSTANCE;
 
@@ -54,7 +56,7 @@ public class WorldPreview implements ModInitializer {
                 .setPrettyPrinting()
                 .create();
 
-        configDir = FabricLoader.getInstance().getConfigDir().resolve("world_preview");
+        configDir = FabricLoader.getInstance().getConfigDir().resolve(ID);
         if (!Files.exists(configDir)) {
             configDir.toFile().mkdirs();
         }
@@ -70,18 +72,8 @@ public class WorldPreview implements ModInitializer {
         previewMappingData = new PreviewMappingData();
     }
 
-    public Executor serverThreadPoolExecutor() {
-        // Nothing to do on fabric
-        return null;
-    }
-
     public void loaderSpecificSetup(MinecraftServer minecraftServer) {
-        // Nothing to do on fabric
         ServerLifecycleEvents.SERVER_STARTING.invoker().onServerStarting(minecraftServer);
-    }
-
-    public void loaderSpecificTeardown(MinecraftServer minecraftServer) {
-        // Nothing to do for fabric
     }
 
     public WorldPreviewConfig cfg() {
@@ -166,7 +158,8 @@ public class WorldPreview implements ModInitializer {
     }
 
     public void writeUserColorConfig(Map<ResourceLocation, PreviewMappingData.ColorEntry> userColorConfig) {
-        record Entry(int r, int g, int b, boolean cave) {}
+        record Entry(int r, int g, int b, boolean cave) {
+        }
         Map<String, Entry> writeData = userColorConfig.entrySet()
                 .stream()
                 .collect(Collectors.toMap(x -> x.getKey().toString(), x -> {

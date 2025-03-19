@@ -3,7 +3,11 @@ package caeruleusTait.world.preview.backend.storage;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMaps;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.MinecraftServer;
@@ -24,7 +28,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.border.WorldBorder;
-import net.minecraft.world.level.chunk.*;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkSource;
+import net.minecraft.world.level.chunk.ProtoChunk;
+import net.minecraft.world.level.chunk.UpgradeData;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.entity.EntityTypeTest;
@@ -53,7 +60,7 @@ public class PreviewLevel implements WorldGenLevel {
     public PreviewLevel(RegistryAccess registryAccess, LevelHeightAccessor levelHeightAccessor) {
         this.registryAccess = registryAccess;
         this.levelHeightAccessor = levelHeightAccessor;
-        this.biomeRegistry = this.registryAccess.registryOrThrow(Registries.BIOME);
+        this.biomeRegistry = this.registryAccess.lookupOrThrow(Registries.BIOME);
     }
 
     @Nullable

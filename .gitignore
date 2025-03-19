@@ -38,13 +38,3 @@ hs_err_*.log
 replay_*.log
 *.hprof
 *.jfr
-
-# ETC
-build.gradle
-gradle.properties
-WorldPreview.java
-WorldPreviewClient.java
-fabric.mod.json
-mods.toml
-pack.mcmeta
-settings.gradle

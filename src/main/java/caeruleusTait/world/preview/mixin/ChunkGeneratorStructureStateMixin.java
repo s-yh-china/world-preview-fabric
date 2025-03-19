@@ -1,6 +1,5 @@
 package caeruleusTait.world.preview.mixin;
 
-import caeruleusTait.world.preview.WorldPreview;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMaps;
 import net.minecraft.world.level.ChunkPos;

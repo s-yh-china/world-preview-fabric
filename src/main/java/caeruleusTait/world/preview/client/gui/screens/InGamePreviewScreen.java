@@ -10,6 +10,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.worldselection.WorldCreationContext;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.core.LayeredRegistryAccess;
 import net.minecraft.core.Registry;
@@ -71,7 +72,7 @@ public class InGamePreviewScreen extends Screen implements PreviewContainerDataP
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
         guiGraphics.drawCenteredString(minecraft.font, WorldPreviewComponents.TITLE_FULL, width / 2, 6, 0xFFFFFF);
-        guiGraphics.blit(FOOTER_SEPARATOR, 0, Mth.roundToward(this.height - 30, 2), 0.0F, 0.0F, this.width, 2, 32, 2);
+        guiGraphics.blit(RenderType::guiTextured, FOOTER_SEPARATOR, 0, Mth.roundToward(this.height - 30, 2), 0.0F, 0.0F, this.width, 2, 32, 2);
     }
 
     @Override
@@ -169,7 +170,7 @@ public class InGamePreviewScreen extends Screen implements PreviewContainerDataP
 
     @Override
     public Registry<LevelStem> levelStemRegistry(@Nullable WorldCreationContext wcContext) {
-        return integratedServer.registryAccess().registryOrThrow(Registries.LEVEL_STEM);
+        return integratedServer.registryAccess().lookupOrThrow(Registries.LEVEL_STEM);
     }
 
     @Override

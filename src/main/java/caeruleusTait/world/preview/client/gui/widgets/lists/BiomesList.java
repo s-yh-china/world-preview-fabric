@@ -7,12 +7,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.core.Holder;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.level.biome.Biome;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,8 +30,8 @@ public class BiomesList extends BaseObjectSelectionList<BiomesList.BiomeEntry> {
         this.previewContainer = previewContainer;
     }
 
-    public BiomeEntry createEntry(Holder.Reference<Biome> entry, short id, int color, int initialColor, boolean isCave, boolean initialIsCave, String explicitName, PreviewData.DataSource dataSource) {
-        return new BiomeEntry(entry, id, color, initialColor, isCave, initialIsCave, explicitName, dataSource);
+    public BiomeEntry createEntry(ResourceLocation location, short id, int color, int initialColor, boolean isCave, boolean initialIsCave, String explicitName, PreviewData.DataSource dataSource) {
+        return new BiomeEntry(location, id, color, initialColor, isCave, initialIsCave, explicitName, dataSource);
     }
 
     public void setSelected(@Nullable BiomesList.BiomeEntry entry)
@@ -69,7 +67,7 @@ public class BiomesList extends BaseObjectSelectionList<BiomesList.BiomeEntry> {
 
         // If we have more than one page, make sure we don't let the scrollbar run away
         double maxScroll = Math.max(0.0, super.getItemCount() * super.itemHeight - super.height);
-        if(super.getScrollAmount() > maxScroll) {
+        if(super.scrollAmount() > maxScroll) {
             // Make sure that the top entry is visible
             super.setScrollAmount(maxScroll);
         }
@@ -82,14 +80,14 @@ public class BiomesList extends BaseObjectSelectionList<BiomesList.BiomeEntry> {
         private boolean isCave;
         private final int initialColor;
         private final boolean initialIsCave;
-        private final Holder.Reference<Biome> entry;
+        private final ResourceLocation location;
         private PreviewData.DataSource dataSource;
         private final Tooltip tooltip;
         private final PreviewData.DataSource initialDataSource;
         private final boolean isPrimaryNamespace;
 
-        public BiomeEntry(Holder.Reference<Biome> entry, short id, int color, int initialColor, boolean isCave, boolean initialIsCave, String explicitName, PreviewData.DataSource dataSource) {
-            this.entry = entry;
+        public BiomeEntry(ResourceLocation location, short id, int color, int initialColor, boolean isCave, boolean initialIsCave, String explicitName, PreviewData.DataSource dataSource) {
+            this.location = location;
             this.id = id;
             this.color = color;
             this.initialColor = initialColor;
@@ -97,18 +95,17 @@ public class BiomesList extends BaseObjectSelectionList<BiomesList.BiomeEntry> {
             this.initialIsCave = initialIsCave;
             this.dataSource = dataSource;
             this.initialDataSource = dataSource;
-            final ResourceLocation resourceLocation = entry.key().location();
-            final String langKey = resourceLocation.toLanguageKey("biome");
+            final String langKey = location.toLanguageKey("biome");
             if (Language.getInstance().has(langKey)) {
                 this.name = Component.translatable(langKey).getString();
             } else if (explicitName != null && !explicitName.isBlank()) {
                 this.name = explicitName;
             } else {
-                this.name = WorldPreviewClient.toTitleCase(resourceLocation.getPath().replace("_", " "));
+                this.name = WorldPreviewClient.toTitleCase(location.getPath().replace("_", " "));
             }
-            this.isPrimaryNamespace = resourceLocation.getNamespace().equals("minecraft");
+            this.isPrimaryNamespace = location.getNamespace().equals("minecraft");
 
-            String tag = "§5§o" + resourceLocation.getNamespace() + "§r\n§9" + resourceLocation.getPath() + "§r";
+            String tag = "§5§o" + location.getNamespace() + "§r\n§9" + location.getPath() + "§r";
             this.tooltip = Tooltip.create(Component.literal(this.name + "\n\n" + tag));
         }
 
@@ -120,8 +117,8 @@ public class BiomesList extends BaseObjectSelectionList<BiomesList.BiomeEntry> {
             return Component.translatable("world_preview.settings.biomes.source." + dataSource.name());
         }
 
-        public Holder.Reference<Biome> entry() {
-            return entry;
+        public ResourceLocation location() {
+            return location;
         }
 
         public short id() {
@@ -171,6 +168,9 @@ public class BiomesList extends BaseObjectSelectionList<BiomesList.BiomeEntry> {
 
         @Override
         public void render(@NotNull GuiGraphics guiGraphics, int i, int j, int k, int l, int m, int n, int o, boolean bl, float f) {
+            if (bl) {
+                guiGraphics.fill(k, j, k + l, j + m, 0x80FFFFFF);
+            }
             guiGraphics.fill(k + 3, j + 1, k + 13, j + 11, nativeColor(color));
             String formatName = isPrimaryNamespace ? name : "§o" + name;
             guiGraphics.drawString(BiomesList.this.minecraft.font, formatName, k + 16, j + 2, 0xFFFFFF);

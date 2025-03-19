@@ -14,29 +14,7 @@ import net.minecraft.network.chat.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_BG;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_BG_TOOLTIP;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_CONTROLS;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_CONTROLS_TOOLTIP;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_FC;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_FC_TOOLTIP;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_FRAMETIME;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_FRAMETIME_TOOLTIP;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_HEAD;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_HEIGHTMAP;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_HEIGHTMAP_TOOLTIP;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_INTERSECT;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_INTERSECT_TOOLTIP;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_NOISE;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_NOISE_TOOLTIP;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_SHOW_IN_MENU;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_SHOW_IN_MENU_TOOLTIP;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_SHOW_PLAYER;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_SHOW_PLAYER_TOOLTIP;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_STRUCT;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_STRUCT_TOOLTIP;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_THREADS_TOOLTIP;
-import static caeruleusTait.world.preview.client.WorldPreviewComponents.SETTINGS_GENERAL_TITLE;
+import static caeruleusTait.world.preview.client.WorldPreviewComponents.*;
 import static caeruleusTait.world.preview.client.gui.screens.PreviewContainer.LINE_HEIGHT;
 
 public class GeneralTab extends GridLayoutTab {

@@ -20,10 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.Objects;
 
-import static caeruleusTait.world.preview.client.gui.screens.PreviewContainer.BUTTONS_TEXTURE;
-import static caeruleusTait.world.preview.client.gui.screens.PreviewContainer.BUTTONS_TEX_HEIGHT;
-import static caeruleusTait.world.preview.client.gui.screens.PreviewContainer.BUTTONS_TEX_WIDTH;
-import static caeruleusTait.world.preview.client.gui.screens.PreviewContainer.StructureRenderInfo;
+import static caeruleusTait.world.preview.client.gui.screens.PreviewContainer.*;
 
 public class StructuresList extends BaseObjectSelectionList<StructuresList.StructureEntry> {
 
@@ -41,7 +38,7 @@ public class StructuresList extends BaseObjectSelectionList<StructuresList.Struc
 
         // If we have more than one page, make sure we don't let the scrollbar run away
         double maxScroll = Math.max(0.0, super.getItemCount() * super.itemHeight - super.height);
-        if(super.getScrollAmount() > maxScroll) {
+        if(super.scrollAmount() > maxScroll) {
             // Make sure that the top entry is visible
             super.setScrollAmount(maxScroll);
         }
@@ -135,11 +132,16 @@ public class StructuresList extends BaseObjectSelectionList<StructuresList.Struc
             final int xMax = xMin + iconWidth;
             final int yMax = yMin + iconHeight;
 
+            if (bl) {
+                guiGraphics.fill(left, top, left + width, top + height, 0x80FFFFFF);
+            }
+
             if (item != null) {
                 guiGraphics.renderItem(itemStack, xMin, yMin);
             } else {
                 WorldPreviewClient.renderTexture(iconTexture, xMin, yMin, xMax, yMax);
             }
+
             String formatName = isPrimaryNamespace ? name : "§o" + name;
             guiGraphics.drawString(minecraft.font, formatName, left + 16 + 4, top + 6, 0xFFFFFF);
             toggleVisible.setPosition(getRowRight() - 22, top);

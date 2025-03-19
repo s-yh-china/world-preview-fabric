@@ -11,15 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.function.IntFunction;
 
 import static caeruleusTait.world.preview.backend.WorkManager.Y_BLOCK_STRIDE;
-import static caeruleusTait.world.preview.backend.storage.PreviewStorage.FLAG_BIOME;
-import static caeruleusTait.world.preview.backend.storage.PreviewStorage.FLAG_HEIGHT;
-import static caeruleusTait.world.preview.backend.storage.PreviewStorage.FLAG_INTERSECT;
-import static caeruleusTait.world.preview.backend.storage.PreviewStorage.FLAG_NOISE_CONTINENTALNESS;
-import static caeruleusTait.world.preview.backend.storage.PreviewStorage.FLAG_NOISE_DEPTH;
-import static caeruleusTait.world.preview.backend.storage.PreviewStorage.FLAG_NOISE_EROSION;
-import static caeruleusTait.world.preview.backend.storage.PreviewStorage.FLAG_NOISE_HUMIDITY;
-import static caeruleusTait.world.preview.backend.storage.PreviewStorage.FLAG_NOISE_TEMPERATURE;
-import static caeruleusTait.world.preview.backend.storage.PreviewStorage.FLAG_NOISE_WEIRDNESS;
+import static caeruleusTait.world.preview.backend.storage.PreviewStorage.*;
 
 /**
  * Transient settings

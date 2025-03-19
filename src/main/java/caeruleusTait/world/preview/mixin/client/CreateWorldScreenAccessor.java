@@ -16,6 +16,6 @@ public interface CreateWorldScreenAccessor {
     Pair<Path, PackRepository> invokeGetDataPackSelectionSettings(WorldDataConfiguration worldDataConfiguration);
 
     @Invoker
-    Path invokeGetTempDataPackDir();
+    Path invokeGetOrCreateTempDataPackDir();
 
 }
