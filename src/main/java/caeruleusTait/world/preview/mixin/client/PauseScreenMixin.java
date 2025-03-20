@@ -3,6 +3,7 @@ package caeruleusTait.world.preview.mixin.client;
 import caeruleusTait.world.preview.WorldPreview;
 import caeruleusTait.world.preview.client.WorldPreviewComponents;
 import caeruleusTait.world.preview.client.gui.screens.InGamePreviewScreen;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.layouts.GridLayout;
@@ -29,10 +30,9 @@ public abstract class PauseScreenMixin {
                     value = "INVOKE",
                     shift = At.Shift.BEFORE,
                     target = "Lnet/minecraft/client/Minecraft;isLocalServer()Z"
-            ),
-            locals = LocalCapture.CAPTURE_FAILHARD
+            )
     )
-    private void addWorldPreviewButton(CallbackInfo ci, GridLayout gridLayout, GridLayout.RowHelper rowHelper) {
+    private void addWorldPreviewButton(CallbackInfo ci, @Local GridLayout.RowHelper rowHelper) {
         Minecraft minecraft = Minecraft.getInstance();
 
         // Don't show in Multiplayer

@@ -129,7 +129,6 @@ public class PreviewContainer implements AutoCloseable, PreviewDisplayDataProvid
     private NativeImage[] allStructureIcons;
     private NativeImage playerIcon;
     private NativeImage spawnIcon;
-    private List<SeedsList.SeedEntry> seedEntries;
     private ScreenRectangle lastScreenRectangle;
 
     private boolean inhibitUpdates = true;
@@ -507,25 +506,17 @@ public class PreviewContainer implements AutoCloseable, PreviewDisplayDataProvid
         LayeredRegistryAccess<RegistryLayer> layeredRegistryAccess = dataProvider.layeredRegistryAccess(wcContext);
 
         workManager.cancel();
-        Runnable changeWorldGenState = () -> {
-            workManager.changeWorldGenState(
-                    levelStem,
-                    layeredRegistryAccess,
-                    previewData,
-                    dataProvider.worldOptions(wcContext),
-                    worldDataConfiguration,
-                    dataProvider,
-                    minecraft.getProxy(),
-                    dataProvider.tempDataPackDir(),
-                    dataProvider.minecraftServer()
-            );
-        };
-
-        // Some forge mods require running the server setup in a specific thread pool to switch
-        // to the server specific logic (`EffectiveSide.get().isClient()`)
-        changeWorldGenState.run();
-
-        // Do NOT run this in the lambda because this call might change screens
+        workManager.changeWorldGenState(
+                levelStem,
+                layeredRegistryAccess,
+                previewData,
+                dataProvider.worldOptions(wcContext),
+                worldDataConfiguration,
+                dataProvider,
+                minecraft.getProxy(),
+                dataProvider.tempDataPackDir(),
+                dataProvider.minecraftServer()
+        );
         workManager.postChangeWorldGenState();
 
         // Biomes
@@ -741,7 +732,7 @@ public class PreviewContainer implements AutoCloseable, PreviewDisplayDataProvid
     }
 
     private void updateSeedListWidget() {
-        seedEntries = cfg.savedSeeds.stream().map(seedsList::createEntry).toList();
+        List<SeedsList.SeedEntry> seedEntries = cfg.savedSeeds.stream().map(seedsList::createEntry).toList();
         seedsList.replaceEntries(seedEntries);
         int idx = cfg.savedSeeds.indexOf(dataProvider.seed());
         if (idx >= 0) {

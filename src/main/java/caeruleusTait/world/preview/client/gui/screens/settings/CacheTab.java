@@ -10,6 +10,8 @@ import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.tabs.GridLayoutTab;
 import net.minecraft.client.gui.layouts.GridLayout;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static caeruleusTait.world.preview.client.WorldPreviewComponents.*;
 import static caeruleusTait.world.preview.client.gui.screens.PreviewContainer.LINE_HEIGHT;
@@ -18,16 +20,16 @@ public class CacheTab extends GridLayoutTab {
 
     private final PreviewStorageCacheManager cacheManager;
 
-    public CacheTab(Minecraft minecraft, PreviewStorageCacheManager cacheManager) {
+    public CacheTab(@NotNull Minecraft minecraft, @Nullable PreviewStorageCacheManager cacheManager) {
         super(SETTINGS_CACHE_TITLE);
         this.cacheManager = cacheManager;
 
         final WorldPreviewConfig cfg = WorldPreview.get().cfg();
         final int LINE_WIDTH = 320;
 
-        Checkbox cbGameEnable     = Checkbox.builder(SETTINGS_CACHE_G_ENABLE,           minecraft.font).selected(cfg.cacheInGame      ).onValueChange((box, val) -> cfg.cacheInGame       = val).build();
-        Checkbox cbNewEnable      = Checkbox.builder(SETTINGS_CACHE_N_ENABLE,           minecraft.font).selected(cfg.cacheInNew       ).onValueChange((box, val) -> cfg.cacheInNew        = val).build();
-        Checkbox cbCompressEnable = Checkbox.builder(SETTINGS_CACHE_COMPRESSION,        minecraft.font).selected(cfg.enableCompression).onValueChange((box, val) -> cfg.enableCompression = val).build();
+        Checkbox cbGameEnable = Checkbox.builder(SETTINGS_CACHE_G_ENABLE, minecraft.font).selected(cfg.cacheInGame).onValueChange((box, val) -> cfg.cacheInGame = val).build();
+        Checkbox cbNewEnable = Checkbox.builder(SETTINGS_CACHE_N_ENABLE, minecraft.font).selected(cfg.cacheInNew).onValueChange((box, val) -> cfg.cacheInNew = val).build();
+        Checkbox cbCompressEnable = Checkbox.builder(SETTINGS_CACHE_COMPRESSION, minecraft.font).selected(cfg.enableCompression).onValueChange((box, val) -> cfg.enableCompression = val).build();
 
         cbCompressEnable.setTooltip(Tooltip.create(SETTINGS_CACHE_COMPRESSION_TOOLTIP));
 
@@ -42,10 +44,14 @@ public class CacheTab extends GridLayoutTab {
         rowHelper.addChild(cbGameEnable);
         rowHelper.addChild(cbNewEnable);
         rowHelper.addChild(cbCompressEnable);
-        rowHelper.addChild(btnClear);
+        if (cacheManager != null) {
+            rowHelper.addChild(btnClear);
+        }
     }
 
     private void onClearCache(Button btn) {
-        cacheManager.clearCache();
+        if (cacheManager != null) {
+            cacheManager.clearCache();
+        }
     }
 }

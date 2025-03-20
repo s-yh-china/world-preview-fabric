@@ -22,7 +22,10 @@ repositories {
         url = 'https://maven.parchmentmc.org'
     }
 
-    maven { url 'https://maven.wispforest.io' }
+    maven {
+        name = 'TerraformersMC'
+        url = 'https://maven.terraformersmc.com/'
+    }
 }
 
 loom {
@@ -44,6 +47,10 @@ dependencies {
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    modCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}") {
+        transitive(false)
+    }
 }
 
 processResources {

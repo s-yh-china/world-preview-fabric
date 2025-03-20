@@ -1,40 +1,45 @@
 {
-	"schemaVersion": 1,
-	"id": "world_preview_fabric",
-	"version": "${version}",
-	"name": "World Preview Fabric",
-	"description": "Allows you to preview a map in the new world screen",
-	"authors": [
-		"Caeruleus Draconis",
-		"Taiterio",
-		"violetc"
-	],
-	"contact": {
-		"homepage": "https://github.com/s-yh-china/world-preview-fabric",
-		"sources": "https://github.com/s-yh-china/world-preview-fabric",
-		"issues": "https://github.com/s-yh-china/world-preview-fabric/issues"
-	},
-	"license": "Apache-2.0",
-	"icon": "assets/world_preview/icon.png",
-	"environment": "*",
-	"entrypoints": {
-		"main": [
-			"caeruleusTait.world.preview.WorldPreview"
-		],
-		"client": [
-			"caeruleusTait.world.preview.client.WorldPreviewClient"
-		]
-	},
-	"mixins": [
-		"world_preview.mixins.json"
-	],
-	"accessWidener": "world_preview.accesswidener",
-	"depends": {
-		"fabricloader": ">=0.16.10",
-		"minecraft": [">=1.21.4"],
-		"java": ">=21",
-		"fabric-api": "*"
-	},
-	"suggests": {
-	}
+    "schemaVersion": 1,
+    "id": "world_preview_fabric",
+    "version": "${version}",
+    "name": "World Preview Fabric",
+    "description": "Allows you to preview a map in the new world screen",
+    "authors": [
+        "Caeruleus Draconis",
+        "Taiterio",
+        "violetc"
+    ],
+    "contact": {
+        "homepage": "https://github.com/s-yh-china/world-preview-fabric",
+        "sources": "https://github.com/s-yh-china/world-preview-fabric",
+        "issues": "https://github.com/s-yh-china/world-preview-fabric/issues"
+    },
+    "license": "Apache-2.0",
+    "icon": "assets/world_preview/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "caeruleusTait.world.preview.WorldPreview"
+        ],
+        "client": [
+            "caeruleusTait.world.preview.client.WorldPreviewClient"
+        ],
+        "modmenu": [
+            "caeruleusTait.world.preview.client.gui.ModMenuIntegration"
+        ]
+    },
+    "mixins": [
+        "world_preview.mixins.json"
+    ],
+    "accessWidener": "world_preview.accesswidener",
+    "depends": {
+        "fabricloader": ">=0.16.10",
+        "minecraft": [
+            ">=1.21.4"
+        ],
+        "java": ">=21",
+        "fabric-api": "*"
+    },
+    "suggests": {
+    }
 }
