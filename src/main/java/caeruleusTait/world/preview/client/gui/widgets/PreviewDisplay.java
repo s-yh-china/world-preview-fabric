@@ -885,7 +885,7 @@ public class PreviewDisplay extends AbstractWidget implements AutoCloseable {
         final int R = (orig >> 16) & 0xFF;
         final int G = (orig >> 8) & 0xFF;
         final int B = (orig >> 0) & 0xFF;
-        return (R << 0) | (G << 8) | (B << 16) | (0xFF << 24);
+        return (R << 16) | (G << 8) | (B << 0) | (0xFF << 24);
     }
 
     private static int highlightColor(int orig) {

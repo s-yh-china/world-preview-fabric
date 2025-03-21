@@ -134,6 +134,11 @@
     "g": 75,
     "b": 2
   },
+  "minecraft:pale_garden": {
+    "r": 138,
+    "g": 138,
+    "b": 140
+  },
   "minecraft:birch_forest": {
     "r": 173,
     "g": 225,
