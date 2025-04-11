@@ -2,6 +2,20 @@
 
 This document contains a list of notable changes for world-preview-fabric.
 
+## [1.0.1] - 2025-04-11
+
+### ✨ Features
+
+-  ModMenu support
+
+### 🐛 Bug Fixes
+
+-  Fix Biomes display color, and missing color
+
+### 🗃️ Miscellaneous
+
+- Update zh_cn.json [[#1]](https://github.com/s-yh-china/world-preview-fabric/issues/1)
+
 ## [1.0.0] - 2025-03-19
 
 ### ✨ Features
