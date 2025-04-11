@@ -6,10 +6,6 @@ plugins {
 version = project.mod_version
 group = project.maven_group
 
-base {
-    archivesName = project.archives_base_name
-}
-
 repositories {
     // Add repositories to retrieve artifacts from in here.
     // You should only use this when depending on other mods because
@@ -77,6 +73,13 @@ java {
 
 jar {
     from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
+        rename { "${it}_${archives_base_name}" }
     }
+}
+
+remapJar {
+    archiveFileName = "${archives_base_name}-${mod_version}-${minecraft_version}.jar"
+}
+remapSourcesJar {
+    archiveFileName = "${archives_base_name}-${mod_version}-${minecraft_version}-sources.jar"
 }
